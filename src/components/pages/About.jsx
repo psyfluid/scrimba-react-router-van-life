@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import aboutImg from "/src/assets/image_55.png";
+import aboutImg from "/src/assets/images/image_55.png";
 
 export default function About() {
   return (
-    <main>
+    <div className="about-container">
       <img src={aboutImg} alt="a tent on a van at night" />
       <div className="about">
         <h1>Don’t squeeze in a sedan when you could relax in a van.</h1>
@@ -26,6 +26,6 @@ export default function About() {
           <Link to="/vans">Explore our vans</Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
