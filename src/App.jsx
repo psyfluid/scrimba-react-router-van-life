@@ -1,43 +1,56 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom';
 import Layout from '/src/components/layout/Layout';
 import Home from '/src/components/pages/Home';
 import About from '/src/components/pages/About';
-import Vans from '/src/components/pages/Vans/Vans';
-import VanDetail from '/src/components/pages/Vans/VanDetail';
+import NotFound from '/src/components/pages/NotFound';
+import Error from '/src/components/pages/Error';
+import Login, { loader as loginLoader } from './components/pages/Login';
+import Vans, { loader as vansLoader } from '/src/components/pages/Vans/Vans';
+import VanDetail, { loader as vanDetailLoader } from '/src/components/pages/Vans/VanDetail';
 import HostLayout from '/src/components/pages/Host/HostLayout';
 import HostDashboard from '/src/components/pages/Host/HostDashboard';
 import HostIncome from '/src/components/pages/Host/HostIncome';
-import HostVans from '/src/components/pages/Host/HostVans';
 import HostReviews from '/src/components/pages/Host/HostReviews';
-import HostVanDetail from './components/pages/Host/HostVanDetail';
+import HostVans, { loader as hostVansLoader } from '/src/components/pages/Host/HostVans';
+import HostVanDetail, {
+  loader as hostVanDetailLoader,
+} from './components/pages/Host/HostVanDetail';
 import HostVanInfo from './components/pages/Host/HostVanInfo';
 import HostVanPhotos from './components/pages/Host/HostVanPhotos';
 import HostVanPricing from './components/pages/Host/HostVanPricing';
+import { requireAuth } from '/src/utils';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="vans" element={<Vans />} />
-          <Route path="vans/:id" element={<VanDetail />} />
-          <Route path="host" element={<HostLayout />}>
-            <Route index element={<HostDashboard />} />
-            <Route path="income" element={<HostIncome />} />
-            <Route path="reviews" element={<HostReviews />} />
-            <Route path="vans" element={<HostVans />} />
-            <Route path="vans/:id" element={<HostVanDetail />}>
-              <Route index element={<HostVanInfo />} />
-              <Route path="pricing" element={<HostVanPricing />} />
-              <Route path="photos" element={<HostVanPhotos />} />
-            </Route>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} loader={loginLoader} />
+        <Route path="vans" element={<Vans />} errorElement={<Error />} loader={vansLoader} />
+        <Route path="vans/:id" element={<VanDetail />} loader={vanDetailLoader} />
+        <Route path="host" element={<HostLayout />}>
+          <Route index element={<HostDashboard />} loader={async () => await requireAuth()} />
+          <Route path="income" element={<HostIncome />} loader={async () => await requireAuth()} />
+          <Route path="reviews" element={<HostReviews />} loader={async () => await requireAuth()} />
+          <Route path="vans" element={<HostVans />} loader={hostVansLoader} />
+          <Route path="vans/:id" element={<HostVanDetail />} loader={hostVanDetailLoader}>
+            <Route index element={<HostVanInfo />} loader={async () => await requireAuth()} />
+            <Route path="pricing" element={<HostVanPricing />} loader={async () => await requireAuth()} />
+            <Route path="photos" element={<HostVanPhotos />} loader={async () => await requireAuth()} />
           </Route>
         </Route>
-      </Routes>
-    </BrowserRouter>
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    )
   );
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,17 +1,25 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { useState, useEffect } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
+import { getHostVans } from '/src/api';
+import { requireAuth } from '/src/utils';
+
+export async function loader() {
+  await requireAuth();
+  return getHostVans();
+}
 
 export default function HostVans() {
-  const [vans, setVans] = useState([]);
+  // const [vans, setVans] = useState([]);
 
-  useEffect(() => {
-    fetch('/api/host/vans')
-      .then((res) => res.json())
-      .then((data) => setVans(data.vans));
-  }, []);
+  // useEffect(() => {
+  //   fetch('/api/host/vans')
+  //     .then((res) => res.json())
+  //     .then((data) => setVans(data.vans));
+  // }, []);
+  const vans = useLoaderData();
 
   const hostVansElements = vans.map((van) => (
-    <Link to={`/host/vans/${van.id}`} key={van.id} className="host-van-link-wrapper">
+    <Link to={van.id} key={van.id} className="host-van-link-wrapper">
       <div className="host-van-single">
         <img src={van.imageUrl} alt={`Image of ${van.name}`} />
         <div className="host-van-info">

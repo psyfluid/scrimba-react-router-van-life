@@ -1,22 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
+import { Link, useLocation, useLoaderData } from 'react-router-dom';
+import { getVans } from '../../../api';
+
+export function loader({params}) {
+  return getVans(params.id);
+}
 
 export default function VanDetail() {
-  const params = useParams();
-  const [van, setVan] = useState(null);
+  const location = useLocation();
+  // const params = useParams();
+  // const [van, setVan] = useState(null);
 
-  useEffect(() => {
-    fetch(`/api/vans/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => setVan(data.vans));
-  }, [params.id]);
+  // useEffect(() => {
+  //   fetch(`/api/vans/${params.id}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setVan(data.vans));
+  // }, [params.id]);
+  const van = useLoaderData();
 
   return (
     <>
       <div className="van-detail-container">
-        <Link to=".." relative="path" className="back-button">
-          &larr; <span>Back to all vans</span>
+        <Link to={`..${location?.state?.search || ''}`} relative="path" className="back-button">
+          &larr; <span>Back to {location?.state?.type || 'all'} vans</span>
         </Link>
         {van ? (
           <div className="van-detail">
