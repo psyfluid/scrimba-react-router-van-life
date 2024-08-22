@@ -847,6 +847,7 @@ img.graph {
 
 .host-reviews .review .info {
   display: flex;
+  margin-block: 16px;
 }
 
 .host-reviews .review .name {
