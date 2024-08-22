@@ -13,7 +13,9 @@ import Login, { loader as loginLoader, action as loginAction } from './component
 import Vans, { loader as vansLoader } from '/src/components/pages/Vans/Vans';
 import VanDetail, { loader as vanDetailLoader } from '/src/components/pages/Vans/VanDetail';
 import HostLayout from '/src/components/pages/Host/HostLayout';
-import HostDashboard from '/src/components/pages/Host/HostDashboard';
+import HostDashboard, {
+  loader as hostDashboardLoader,
+} from '/src/components/pages/Host/HostDashboard';
 import HostIncome from '/src/components/pages/Host/HostIncome';
 import HostReviews from '/src/components/pages/Host/HostReviews';
 import HostVans, { loader as hostVansLoader } from '/src/components/pages/Host/HostVans';
@@ -33,13 +35,14 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} loader={loginLoader} action={loginAction} />
         <Route path="vans" element={<Vans />} errorElement={<Error />} loader={vansLoader} />
-        <Route path="vans/:id" element={<VanDetail />} loader={vanDetailLoader} />
+        <Route
+          path="vans/:id"
+          element={<VanDetail />}
+          errorElement={<Error />}
+          loader={vanDetailLoader}
+        />
         <Route path="host" element={<HostLayout />}>
-          <Route
-            index
-            element={<HostDashboard />}
-            loader={async ({ request }) => await requireAuth(request)}
-          />
+          <Route index element={<HostDashboard />} loader={hostDashboardLoader} />
           <Route
             path="income"
             element={<HostIncome />}
@@ -50,8 +53,18 @@ function App() {
             element={<HostReviews />}
             loader={async ({ request }) => await requireAuth(request)}
           />
-          <Route path="vans" element={<HostVans />} loader={hostVansLoader} />
-          <Route path="vans/:id" element={<HostVanDetail />} loader={hostVanDetailLoader}>
+          <Route
+            path="vans"
+            element={<HostVans />}
+            errorElement={<Error />}
+            loader={hostVansLoader}
+          />
+          <Route
+            path="vans/:id"
+            element={<HostVanDetail />}
+            errorElement={<Error />}
+            loader={hostVanDetailLoader}
+          >
             <Route
               index
               element={<HostVanInfo />}
