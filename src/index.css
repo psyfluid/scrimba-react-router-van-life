@@ -655,3 +655,7 @@ i[class*='van-type-'] {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+h3 {
+  margin-bottom: 1.5rem;
+}

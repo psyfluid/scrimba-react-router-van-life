@@ -74,6 +74,7 @@ createServer({
   routes() {
     this.namespace = 'api';
     this.logging = false;
+    this.timing = 1000;
 
     this.get('/vans', (schema) => {
       return schema.vans.all();
