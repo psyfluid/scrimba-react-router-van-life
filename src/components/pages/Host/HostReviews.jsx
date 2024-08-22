@@ -1,4 +1,5 @@
 import { BsStarFill } from 'react-icons/bs';
+import reviewsGraph from '/src/assets/images/reviews-graph.png';
 
 export default function HostReviews() {
   const reviewsData = [
@@ -26,7 +27,7 @@ export default function HostReviews() {
           Last <span>30 days</span>
         </p>
       </div>
-      <img src="/src/assets/images/reviews-graph.png" alt="Review graph" className="graph" />
+      <img src={reviewsGraph} alt="Review graph" className="graph" />
       <h3>Reviews (2)</h3>
       {reviewsData.map((review) => (
         <div key={review.id}>
